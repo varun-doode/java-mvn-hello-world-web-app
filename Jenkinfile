@@ -13,7 +13,7 @@ stage ('build'){
      stage ('publish'){
       steps{
         sh 'docker tag mavenimage:latest varundoode/mavenimage1:1.0'
-        sh 'docker login -u varundoode -p Even&13579'
+        sh 'docker login -u varundoode -p evenandodd'
         sh 'docker push varundoode/mavenimage1:1.0'
       }
     }
@@ -21,7 +21,7 @@ stage ('build'){
   stage ('deploy'){
     agent {label 'slave2'}
       steps{
-        sh 'docker login -u varundoode -p Even&13579'
+        sh 'docker login -u varundoode -p evenandodd'
         sh 'docker pull varundoode/mavenimage1:1.0'
         sh 'docker run -d -p 9000:8080 varundoode/mavenimage1:1.0'
       }
