@@ -1,7 +1,14 @@
-FROM maven:3.6.1-jdk-8 as maven_builder
-WORKDIR /app
+FROM maven:3.6.3-jdk-11 as mavenbuilder
+ARG TEST=/home/devops
+WORKDIR $TEST
 COPY . .
-RUN mvn package
+RUN  mvn clean package
+#RUN which mvn
+#RUN ls target/
+#RUN pwd
 
-FROM tomcat:8.5.43-jdk8
-COPY --from=maven_builder /app/target/mvn-hello-world.war /usr/local/tomcat/webapps
+FROM tomcat:9.0
+ARG TEST=/home/devops
+COPY --from=mavenbuilder ${TEST}/target/hello-world-war-1.0.0.war /usr/local/tomcat/webapps
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
